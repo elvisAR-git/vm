@@ -240,6 +240,7 @@ export default class Register {
             throw new Error('Not enough money');
         }
 
+
         // calculate change
 
         const change = total - itemCost;
@@ -260,7 +261,7 @@ export default class Register {
         console.timeEnd('checkout');
 
         return {
-            change: money,
+            cash: money,
             itemCost,
             amountPaid: total,
             changeDue: change

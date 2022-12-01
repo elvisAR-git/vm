@@ -12,7 +12,7 @@ export default class Machine {
     private id: number;
     private name: string;
 
-    constructor(id: number, name: string, numberOfShelves: number, numberOfSlots: number) {
+    constructor(id: number, name: string) {
         this.id = id;
         this.name = name;
         this.mode = {
@@ -72,16 +72,19 @@ export default class Machine {
             ]
         }
         this.register = new Register(this.mode);
-        this.inventory = new Inventory(
-            numberOfShelves,
-            numberOfSlots
-        );
+        this.inventory = new Inventory();
     }
 
 
     public addMoneyToRegister(cash: {
-        bills: Money[],
-        coins: Money[]
+        bills: {
+            value: number,
+            count: number,
+        }[],
+        coins: {
+            value: number,
+            count: number,
+        }[]
     }) {
 
         cash.bills.forEach(bill => {
@@ -106,27 +109,38 @@ export default class Machine {
         });
     }
 
-    public addProductsToInventory(products: []) {
+    public addProductsToInventory(products: Product[]) {
         products.forEach(product => {
             this.inventory.addProduct(product);
         });
     }
 
-    public removeProductsFromInventory(products: {
-        shelf: number,
-        slot: number
-    }[
-
-    ]) {
-        products.forEach(product => {
-            this.inventory.removeProduct(product.shelf, product.slot);
+    public removeProductsFromInventory(productSlots: number[]) {
+        productSlots.forEach(slot => {
+            this.inventory.removeProduct(slot);
         });
     }
 
 
+    public changeStock(itemSlot: number, qty: number, add = true) {
+
+        if (add) {
+            this.inventory.addStock(itemSlot, qty);
+        } else {
+            this.inventory.removeStock(itemSlot, qty);
+        }
+    }
+
+
     public buyProduct(itemSlot: number, qty: number, cash: {
-        bills: Money[],
-        coins: Money[]
+        bills: {
+            value: number,
+            count: number,
+        }[],
+        coins: {
+            value: number,
+            count: number,
+        }[]
     }): {
         product: Product,
         change: Change

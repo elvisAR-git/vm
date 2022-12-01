@@ -1,92 +1,117 @@
 import Product from "./models/product";
-import Shelf from "./shelf";
 
 export default class Inventory {
 
-    shelves: Shelf[] = [];
-    size: number;
-    shelfSize: number;
+    private products: Product[] = [];
 
-    constructor(size: number, shelfSize: number) {
-        this.size = size;
-        this.shelfSize = shelfSize;
-        this.initializeShelves();
-    }
+    public addProduct(product: Product) {
+        // if product exists, update it
+        let existingProduct = this.products.find(p => p.id === product.id);
 
+        if (existingProduct) {
+            this.updateProduct(this.products.indexOf(existingProduct), product);
+        }
 
-    private initializeShelves(): void {
-        let start = 0;
-        for (let i = 0; i < this.size; i++) {
-            // creates a square shelf of size (shelfSize*shelfSize)
-            this.shelves.push(new Shelf(this.shelfSize, this.shelfSize, start));
-            start += this.shelfSize;
+        // else add it
+        else {
+            this.products.push(product);
         }
     }
 
-    public addProduct(product: Product): { shelf: number, row: number } {
+    public removeProduct(slot: number) {
+        this.products.splice(slot, 1);
+    }
 
-        // find the shelf with the highest confidence score for the product
-        // confidence score is calculated by the amount of products in the shelf with the same id as the product and the amount of slots to spare in the row if the product is added to the shelf, the less slots to spare the higher the confidence score
-        // this reduces space wastage by using shelves with the least amount of space to spare for the product
+    public updateProduct(slot: number, product: Product) {
+        this.products[slot] = product;
+    }
 
-        const scores = this.shelves.map((shelf) => {
-            return {
-                score: shelf.shelfConfidence(product),
-                shelf: shelf,
+    buyProduct(slot: number, qty: number): Product {
+        if (this.products[slot]) {
+            const product = this.products[slot];
+
+            if (product.qty - qty >= 0) {
+                product.qty -= qty;
+                return product;
             }
+
+            throw new Error(`Not enough ${product.name} in stock`);
+        } else {
+            throw new Error(`No product found at slot ${slot}`);
+        }
+    }
+
+
+    public getProducts() {
+        return this.products;
+    }
+
+    public getProduct(slot: number) {
+        let product = this.products[slot];
+
+        if (product) return product;
+
+        throw new Error(`No product found at slot ${slot}`);
+    }
+
+
+    addStock(slot: number, qty: number) {
+        let product = this.products[slot];
+
+        if (product) {
+            product.qty += qty;
+        } else {
+            throw new Error(`No product found at slot ${slot}`);
+        }
+    }
+
+
+    removeStock(slot: number, qty: number) {
+        let product = this.products[slot];
+
+        if (product) {
+            if (product.qty - qty >= 0) {
+                product.qty -= qty;
+            } else {
+                throw new Error(`Not enough ${product.name} in stock`);
+            }
+        } else {
+            throw new Error(`No product found at slot ${slot}`);
+        }
+    }
+
+
+    public getStock(slot: number) {
+        let product = this.products[slot];
+
+        if (product) {
+            return product.qty;
+        } else {
+            throw new Error(`No product found at slot ${slot}`);
+        }
+    }
+
+
+    get totalStock() {
+        let total = 0;
+
+        this.products.forEach(product => {
+            total += product.qty;
         });
 
-        // sort shelves by confidence score
-        scores.sort((a, b) => b.score - a.score);
-
-        // add product to the shelf with the highest confidence score
-        const { row } = scores[0].shelf.addProduct(product);
-
-
-        return {
-            shelf: this.shelves.indexOf(scores[0].shelf),
-            row,
-        }
+        return total;
     }
 
 
-    public removeProduct(shelf: number, slot: number): void {
+    get totalValue() {
+        let total = 0;
 
-        if (this.shelves.length - 1 < shelf) {
-            throw new Error('Shelf not found');
-        }
+        this.products.forEach(product => {
+            total += product.qty * product.price;
+        });
 
-        this.shelves[shelf].removeProduct(slot);
+        return total;
     }
-
-    public buyProduct(productSlot: number, qty: number): Product {
-        // find the shelf that contains the product eg productSlot = 5 in a 3 shelf inventory box with 3 rows each will be in shelf 1
-        const shelf = this.shelves.find((s) => s.start <= productSlot && s.start + s.rows > productSlot);
-
-        // find the product in the shelf
-
-        if (!shelf) {
-            throw new Error('Shelf not found');
-        }
-
-        const product = shelf.dropProduct(productSlot, qty); // drop product from shelf ?? throw error if no stock
-
-        return product;
-    }
-
-
-    public getProducts(): Product[] {
-        return this.shelves.reduce((acc: any[], shelf) => {
-            return acc.concat(shelf.products);
-        }, []);
-    }
-
-
-    public clear(): void {
-        this.shelves.forEach((shelf) => shelf.clear());
-    }
-
-
 
 
 }
