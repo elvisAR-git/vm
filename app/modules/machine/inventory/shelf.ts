@@ -1,14 +1,16 @@
-import Product from "./product";
+import Product from "./models/product";
 
 export default class Shelf {
 
     rows: number;
     products: Product[] = [];
     depth: number;
+    start: number;
 
-    constructor(rows: number, depth: number) {
+    constructor(rows: number, depth: number, start: number) {
         this.rows = rows;
         this.depth = depth; // how many products can be in a row
+        this.start = start;
     }
 
     public addProduct(product: Product): { row: number } {
@@ -78,12 +80,15 @@ export default class Shelf {
     }
 
     // simulate a product being sold
-    public dropProduct(slot: number, qty: number): Product {
+    public dropProduct(itemCode: number, qty: number): Product {
         // check if slot is valid
+
+        const slot = itemCode - this.start; // removes the offset for the shelf
 
         if (slot >= this.products.length) {
             throw new Error('Invalid slot, slot does not exist');
         }
+
 
         // check if qty is valid
 
@@ -96,6 +101,13 @@ export default class Shelf {
         if (qty < 0) {
             throw new Error('Invalid qty, qty cannot be negative');
         }
+
+        // must have enough products in slot
+
+        if (this.products[slot].qty - qty < 0) {
+            throw new Error('Invalid qty, not enough products in slot');
+        }
+
 
         // remove qty from product
 
@@ -156,4 +168,27 @@ export default class Shelf {
     }
 
 
+    public containsProduct(product: Product): boolean {
+        return this.products.some((p) => p.id === product.id);
+    }
+
+
+    public clear(): void {
+        this.products = [];
+    }
+
+
+    public updateSlot(slot: number, product: Product): void {
+        // check if slot is valid
+
+        // used by admin to update a slot price, qty, etc
+
+        if (slot >= this.products.length) {
+            throw new Error('Invalid slot');
+        }
+
+        // update product in slot
+
+        this.products[slot] = product;
+    }
 }

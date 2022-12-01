@@ -1,5 +1,6 @@
-import Mode from "./mode";
-import Money from "./money";
+import Change from "./models/change";
+import Mode from "./models/mode";
+import Money from "./models/money";
 
 export default class Register {
     private mode: Mode;
@@ -194,12 +195,7 @@ export default class Register {
             count: number
         }[],
         itemCost: number
-    ): {
-        change: Money[],
-        itemCost: number,
-        amountPaid: number,
-        changeDue: number,
-    } {
+    ): Change {
         console.time('checkout');
         // make copy of bills and coins in register just in case we need to revert
         const billsCopy = this.mode.bills.map((bill) => ({ ...bill }));

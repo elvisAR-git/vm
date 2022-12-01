@@ -2,7 +2,7 @@
 //  * Main application file
 //  */
 
-import Register from "./app/modules/machine/register";
+import Register from "./app/modules/machine/register/register";
 
 // "use strict";
 
