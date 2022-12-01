@@ -32,7 +32,10 @@ export default class Register {
     }
 
 
-    public addMoney(money: Money, type: 'coin' | 'bill'): void {
+    public addMoney(money: {
+        value: number,
+        count: number,
+    }, type: 'coin' | 'bill'): void {
 
         // check if money is valid
 
@@ -50,6 +53,32 @@ export default class Register {
             const bill = this.mode.bills.find((bill) => bill.value === money.value);
             if (bill) {
                 bill.count += money.count;
+            } else {
+                // not a valid bill
+                throw new Error('Invalid bill');
+            }
+        }
+    }
+
+
+    public removeMoney(money: {
+        value: number,
+        count: number,
+    }, type: 'coin' | 'bill'): void {
+        if (type === 'coin') {
+            const coin = this.mode.coins.find((coin) => coin.value === money.value);
+            if (coin) {
+                coin.count -= money.count;
+            } else {
+                // not a valid coin
+                throw new Error('Invalid coin');
+            }
+        }
+
+        if (type === 'bill') {
+            const bill = this.mode.bills.find((bill) => bill.value === money.value);
+            if (bill) {
+                bill.count -= money.count;
             } else {
                 // not a valid bill
                 throw new Error('Invalid bill');
@@ -280,9 +309,5 @@ export default class Register {
 
         return money;
     }
-
-
-
-
 
 }
