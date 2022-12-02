@@ -19,6 +19,7 @@ import cors from "cors";
 import { expressAddon } from './app/config/express';
 import appRoutes from './routes';
 
+// create an instance of the Vending Machine :: will be injected into the routes
 const vm = new Machine(1, 'Pariti Vending Machine');
 const app = express();
 
