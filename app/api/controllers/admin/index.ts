@@ -19,7 +19,7 @@ export default function adminRoutes(vm: Machine) {
     adminRouter.get('/register/getMode', adminController.getMode.bind(adminController));
 
     // inventory
-    adminRouter.post('/products', adminController.addProduct.bind(adminController));
+    adminRouter.post('/products', adminController.addProducts.bind(adminController));
     adminRouter.delete('/products/:slot', adminController.removeProduct.bind(adminController));
     adminRouter.patch('/products/:slot', adminController.updateProduct.bind(adminController));
     adminRouter.get('/products/:slot', adminController.getProduct.bind(adminController));

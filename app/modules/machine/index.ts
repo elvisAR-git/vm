@@ -15,6 +15,7 @@ export default class Machine {
     constructor(id: number, name: string) {
         this.id = id;
         this.name = name;
+        // register starts with 10 of each bill and 10 of each coin
         this.mode = {
             name: 'default_US',
             bills: [

@@ -78,11 +78,20 @@ export default class AdminController {
 
     public async addCash(req: Request, res: Response) {
         try {
-            const { money, type } = req.body as { money: { value: number, count: number }, type: 'coin' | 'bill' };
+            const { bills, coins } = req.body as {
+                bills: {
+                    value: number,
+                    count: number,
+                }[],
+                coins: {
+                    value: number,
+                    count: number,
+                }[]
+            }
 
-            if (!money || !type) throw new Error("Money and type are required");
+            if (!bills || !coins) throw new Error("Bills and coins are required");
 
-            this.vm.getRegister().addMoney(money, type);
+            this.vm.addMoneyToRegister({ bills, coins });
 
             return res.send(sendResponse({}, false, "Cash added successfully", 200));
         } catch (err) {
@@ -157,13 +166,14 @@ export default class AdminController {
     }
 
 
-    public async addProduct(req: Request, res: Response) {
+    public async addProducts(req: Request, res: Response) {
         try {
-            const product = req.body as Product
+            const products = req.body as Product[]
 
-            if (!product) throw new Error("Product is required");
+            if (!products) throw new Error("Product is required");
 
-            this.vm.getInventory().addProduct(product);
+
+            this.vm.addProductsToInventory(products);
 
             return res.send(sendResponse({}, false, "Product added successfully", 200));
         } catch (err) {
