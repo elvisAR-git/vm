@@ -52,7 +52,13 @@ export default class Inventory {
 
 
     public getProducts() {
-        return this.products;
+        return this.products.map(product => {
+            return {
+                ...product,
+                price: product.price.toFixed(2),
+                slot: this.products.indexOf(product)
+            }
+        })
     }
 
     public getProduct(slot: number) {

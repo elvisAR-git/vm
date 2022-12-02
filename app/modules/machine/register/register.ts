@@ -168,7 +168,7 @@ export default class Register {
             // if money left is more than the smallest coin and less than the largest bill, throw error
 
             if (value > coins[coins.length - 1].value && value < bills[0].value) {
-                throw new Error('Not enough change, please add more coins and bills');
+                throw new Error('Ran out of change, sorry :(');
             }
 
         }

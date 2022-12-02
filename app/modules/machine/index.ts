@@ -166,6 +166,51 @@ export default class Machine {
     } {
 
 
+        // validate cash
+
+        // if missing bills or coins, throw error
+
+        if (!cash.bills) {
+            throw new Error('bills is missing');
+        }
+
+        if (!cash.coins) {
+            throw new Error('coins is missing');
+        }
+
+        // itemSlot must be a number
+        if (typeof itemSlot !== 'number') {
+            throw new Error('itemSlot must be a number');
+        }
+
+        // qty must be a number
+
+        if (typeof qty !== 'number') {
+            throw new Error('qty must be a number');
+        }
+
+        // qty must be greater than 0
+
+        if (qty <= 0) {
+            throw new Error('qty must be greater than 0');
+        }
+
+        // itemSlot must be greater than -1
+
+        if (itemSlot < 0) {
+            throw new Error('itemSlot must be greater than -1');
+        }
+
+
+
+        if (!Array.isArray(cash.bills)) {
+            throw new Error('bills must be an array');
+        }
+
+        if (!Array.isArray(cash.coins)) {
+            throw new Error('coins must be an array');
+        }
+
         let product = this.inventory.buyProduct(itemSlot, qty);
         let price = product.price * qty;
         let change = this.register.checkout(
