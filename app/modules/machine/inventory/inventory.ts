@@ -114,4 +114,9 @@ export default class Inventory {
     }
 
 
+    public clear() {
+        this.products = [];
+    }
+
+
 }

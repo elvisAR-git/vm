@@ -1,7 +1,7 @@
 export default interface Product {
-    name: string;
+    name?: string;
     price: number;
     qty: number;
-    type: string;
-    id: number;
+    type?: string;
+    id?: number;
 }

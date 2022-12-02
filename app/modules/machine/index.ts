@@ -181,4 +181,8 @@ export default class Machine {
         return this.name;
     }
 
+    public clearInventory() {
+        this.inventory.clear();
+    }
+
 }
