@@ -118,17 +118,12 @@ export default class Register {
                     bill.count--;
                 }
 
-                // if we are at the last bill and there is still money left, break out of loop
-                if (bill.value === bills[bills.length - 1].value && value > 0) {
-                    break;
-                }
-
-
             }
         });
 
         coins.forEach((coin) => {
             while (value >= coin.value && coin.count > 0) {
+
                 // push coin to money, if there is enough in the register
                 // check if coin is already in money array and add to count if it is
                 const coinInMoney = money.find((money) => money.value === coin.value);
@@ -144,16 +139,17 @@ export default class Register {
                     });
                     value -= coin.value;
                     coin.count--;
+
                 }
 
-                // if we are at the last coin and there is still money left, break out of loop
-
-                if (coin.value === coins[coins.length - 1].value && value > 0) {
-                    break;
-                }
+                value = Math.round(value * 100) / 100;
 
             }
         });
+
+        // round value to 2 decimal places
+
+
 
         // if there is still money left, throw error
         if (value > 0) {

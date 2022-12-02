@@ -1,4 +1,6 @@
-export function send_response(
+import { Response } from "express";
+
+export function sendResponse(
     data: any = {},
     is_error: boolean = false,
     message: string = "",
@@ -19,3 +21,17 @@ export function send_response(
 
     return json;
 };
+
+
+export function sendError(res: Response, err: Error, message: string = "", status_code: number = 500) {
+    return res.send(
+        sendResponse(
+            {
+                error_message: err.message,
+            },
+            true,
+            message || err.message,
+            status_code,
+        )
+    )
+}

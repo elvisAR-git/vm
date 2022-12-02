@@ -3,9 +3,6 @@
 //  */
 
 import Machine from "./app/modules/machine";
-import Register from "./app/modules/machine/register/register";
-
-"use strict";
 
 import dotenv from 'dotenv';
 
