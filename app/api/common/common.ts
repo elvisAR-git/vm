@@ -1,6 +1,24 @@
 import { Response } from "express";
 
+
+
+
+export function sendError(res: Response, err: Error, message: string = "", status_code: number = 500) {
+    return sendResponse(
+        res,
+        {
+            error_message: err.message,
+        },
+        true,
+        message || err.message,
+        status_code,
+    )
+}
+
+
+
 export function sendResponse(
+    res: Response,
     data: any = {},
     is_error: boolean = false,
     message: string = "",
@@ -19,19 +37,5 @@ export function sendResponse(
         json.message = "";
     }
 
-    return json;
+    return res.status(status_code).send(json);
 };
-
-
-export function sendError(res: Response, err: Error, message: string = "", status_code: number = 500) {
-    return res.send(
-        sendResponse(
-            {
-                error_message: err.message,
-            },
-            true,
-            message || err.message,
-            status_code,
-        )
-    )
-}

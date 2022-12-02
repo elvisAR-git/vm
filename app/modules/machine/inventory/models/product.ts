@@ -3,5 +3,5 @@ export default interface Product {
     price: number;
     qty: number;
     type?: string;
-    id?: number;
+    id?: string;
 }

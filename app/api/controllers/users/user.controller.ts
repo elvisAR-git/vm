@@ -8,9 +8,7 @@ export default class UserContoller {
     public async getProducts(req: Request, res: Response) {
         try {
             const products = this.vm.getInventory().getProducts();
-            return res.send(sendResponse({
-                products
-            }, false, "Products fetched successfully", 200));
+            return sendResponse(res, products, false, "Products fetched successfully", 200);
         } catch (err) {
             if (err instanceof Error) {
                 return sendError(res, err, "Error fetching products", 500);
@@ -28,11 +26,13 @@ export default class UserContoller {
                 slot: number
             };
             if (!product) throw new Error("Product is required");
-            this.vm.buyProduct(product.slot, product.qty, {
+
+            const result = this.vm.buyProduct(product.slot, product.qty, {
                 bills: product.bills,
                 coins: product.coins
             })
-            return res.send(sendResponse({}, false, "Product bought successfully", 200));
+
+            return sendResponse(res, result, false, "Product bought successfully", 200);
         } catch (err) {
             if (err instanceof Error) {
                 return sendError(res, err, "Error buying product", 500);

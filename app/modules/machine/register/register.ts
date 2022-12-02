@@ -142,7 +142,7 @@ export default class Register {
 
                 }
 
-                value = Math.round(value * 100) / 100;
+                value = Math.round(value * 100) / 100; // round to 2 decimal places so that there are no floating point errors for example 0.1 + 0.2 = 0.30000000000000004 , this can compound and cause issues
 
             }
         });

@@ -1,3 +1,4 @@
+import { IdGenerator } from "../../shared/id";
 import Product from "./models/product";
 
 export default class Inventory {
@@ -5,11 +6,19 @@ export default class Inventory {
     private products: Product[] = [];
 
     public addProduct(product: Product) {
-        // if product exists, update it
-        let existingProduct = this.products.find(p => p.id === product.id);
+
+        // validate product
+        if (!product.name) throw new Error('Product must have a name');
+        if (!product.price) throw new Error('Product must have a price');
+        if (!product.qty) throw new Error('Product must have a qty');
+
+        product.id = IdGenerator.newId();
+
+        // if product exists, throw error
+        let existingProduct = this.products.find(p => p.name === product.name);
 
         if (existingProduct) {
-            this.updateProduct(this.products.indexOf(existingProduct), product);
+            throw new Error('Product with that name already exists');
         }
 
         // else add it

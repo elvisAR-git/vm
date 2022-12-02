@@ -12,9 +12,9 @@ export default class AdminController {
         try {
             const total = this.vm.getRegister().total;
 
-            return res.send(sendResponse({
+            return sendResponse(res, {
                 total
-            }, false, "Total amount fetched successfully", 200));
+            }, false, "Total amount fetched successfully", 200);
         } catch (err) {
             if (err instanceof Error) {
                 return sendError(res, err, "Error fetching total amount", 500);
@@ -30,9 +30,7 @@ export default class AdminController {
                 bills: this.vm.getRegister().getBills()
             }
 
-            return res.send(sendResponse({
-                cash
-            }, false, "Cash amount fetched successfully", 200));
+            return sendResponse(res, cash, false, "Cash fetched successfully", 200);
         } catch (err) {
             if (err instanceof Error) {
                 return sendError(res, err, "Error fetching cash", 500);
@@ -45,7 +43,7 @@ export default class AdminController {
         try {
             this.vm.getRegister().clearRegister();
 
-            return res.send(sendResponse({}, false, "Register drained successfully", 200));
+            return sendResponse(res, {}, false, "Register drained successfully", 200);
         } catch (err) {
 
             if (err instanceof Error) {
@@ -65,9 +63,7 @@ export default class AdminController {
 
             const cash = this.vm.getRegister().widthdraw(amount);
 
-            return res.send(sendResponse({
-                cash
-            }, false, "Cash withdrawn successfully", 200));
+            return sendResponse(res, cash, false, "Cash withdrawn successfully", 200);
         } catch (err) {
             if (err instanceof Error) {
                 return sendError(res, err, "Error withdrawing cash", 500);
@@ -93,7 +89,10 @@ export default class AdminController {
 
             this.vm.addMoneyToRegister({ bills, coins });
 
-            return res.send(sendResponse({}, false, "Cash added successfully", 200));
+            return sendResponse(res, {
+                total: this.vm.getRegister().total
+            }, false, "Cash added successfully", 201);
+
         } catch (err) {
             if (err instanceof Error) {
                 return sendError(res, err, "Error adding cash", 500);
@@ -110,7 +109,9 @@ export default class AdminController {
 
             this.vm.getRegister().removeMoney(money, type);
 
-            return res.send(sendResponse({}, false, "Cash removed successfully", 200));
+            return sendResponse(res, {
+                total: this.vm.getRegister().total
+            }, false, "Cash removed successfully", 200);
         } catch (err) {
             if (err instanceof Error) {
                 return sendError(res, err, "Error removing cash", 500);
@@ -123,9 +124,8 @@ export default class AdminController {
         try {
             const mode = this.vm.getRegister().getMode();
 
-            return res.send(sendResponse({
-                mode
-            }, false, "Mode fetched successfully", 200));
+            return sendResponse(res, mode, false, "Mode fetched successfully", 200);
+
         } catch (err) {
             if (err instanceof Error) {
                 return sendError(res, err, "Error fetching mode", 500);
@@ -142,7 +142,8 @@ export default class AdminController {
 
             this.vm.getRegister().setMode(mode);
 
-            return res.send(sendResponse({}, false, "Mode set successfully", 200));
+            return sendResponse(res, this.vm.getRegister().getMode, false, "Mode set successfully", 200);
+
         } catch (err) {
             if (err instanceof Error) {
                 return sendError(res, err, "Error setting mode", 500);
@@ -154,10 +155,7 @@ export default class AdminController {
     public async getProducts(req: Request, res: Response) {
         try {
             const products = this.vm.getInventory().getProducts();
-
-            return res.send(sendResponse({
-                products
-            }, false, "Products fetched successfully", 200));
+            return sendResponse(res, products, false, "Products fetched successfully", 200)
         } catch (err) {
             if (err instanceof Error) {
                 return sendError(res, err, "Error fetching products", 500);
@@ -172,10 +170,14 @@ export default class AdminController {
 
             if (!products) throw new Error("Product is required");
 
+            if (typeof products === 'object' && !Array.isArray(products)) {
+                throw new Error("Products must be an array");
+            }
+
 
             this.vm.addProductsToInventory(products);
 
-            return res.send(sendResponse({}, false, "Product added successfully", 200));
+            return sendResponse(res, products, false, "Products added successfully", 201);
         } catch (err) {
             if (err instanceof Error) {
                 return sendError(res, err, "Error adding product", 500);
@@ -192,7 +194,8 @@ export default class AdminController {
 
             this.vm.getInventory().removeProduct(slot);
 
-            return res.send(sendResponse({}, false, "Product removed successfully", 200));
+            return sendResponse(res, slot, false, "Product removed successfully", 200);
+
         } catch (err) {
             if (err instanceof Error) {
                 return sendError(res, err, "Error removing product", 500);
@@ -210,7 +213,7 @@ export default class AdminController {
 
             this.vm.getInventory().updateProduct(slot, product);
 
-            return res.send(sendResponse({}, false, "Product updated successfully", 200));
+            return sendResponse(res, product, false, "Product updated successfully", 200);
         } catch (err) {
             if (err instanceof Error) {
                 return sendError(res, err, "Error updating product", 500);
@@ -227,9 +230,7 @@ export default class AdminController {
 
             const product = this.vm.getInventory().getProduct(slot);
 
-            return res.send(sendResponse({
-                product
-            }, false, "Product fetched successfully", 200));
+            return sendResponse(res, product, false, "Product fetched successfully", 200);
         } catch (err) {
             if (err instanceof Error) {
                 return sendError(res, err, "Error fetching product", 500);
@@ -241,7 +242,7 @@ export default class AdminController {
         try {
             this.vm.clearInventory();
 
-            return res.send(sendResponse({}, false, "Inventory cleared successfully", 200));
+            return sendResponse(res, {}, false, "Inventory cleared successfully", 200);
         } catch (err) {
             if (err instanceof Error) {
                 return sendError(res, err, "Error clearing inventory", 500);

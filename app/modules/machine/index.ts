@@ -111,12 +111,30 @@ export default class Machine {
     }
 
     public addProductsToInventory(products: Product[]) {
+
+        if (!Array.isArray(products)) {
+            throw new Error('products must be an array');
+        }
+
+        if (products.length === 0) {
+            throw new Error('products must not be empty');
+        }
+
         products.forEach(product => {
             this.inventory.addProduct(product);
         });
     }
 
     public removeProductsFromInventory(productSlots: number[]) {
+
+        if (!Array.isArray(productSlots)) {
+            throw new Error('productSlots must be an array');
+        }
+
+        if (productSlots.length === 0) {
+            throw new Error('productSlots must not be empty');
+        }
+
         productSlots.forEach(slot => {
             this.inventory.removeProduct(slot);
         });
