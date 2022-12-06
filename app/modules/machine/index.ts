@@ -74,6 +74,30 @@ export default class Machine {
         }
         this.register = new Register(this.mode);
         this.inventory = new Inventory();
+        this.inventory.addProduct({
+            name: 'Coke',
+            price: 1.25,
+            qty: 20,
+            type: 'drink',
+        })
+        this.inventory.addProduct({
+            name: 'Pepsi',
+            price: 3.99,
+            qty: 20,
+            type: 'drink',
+        });
+        this.inventory.addProduct({
+            name: 'Sprite',
+            price: 2.25,
+            qty: 20,
+            type: 'drink',
+        });
+        this.inventory.addProduct({
+            name: 'Cheetos',
+            price: 3.25,
+            qty: 20,
+            type: 'snack',
+        });
     }
 
 
