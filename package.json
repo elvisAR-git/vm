@@ -5,7 +5,10 @@
   "main": "index.ts",
   "scripts": {
     "test": "mocha './app/**/__test__/*spec.ts' --require ts-node/register --timeout 300000 --exit",
-    "dev": "nodemon index.ts"
+    "dev": "nodemon index.ts",
+    "build": "tsc -p .",
+    "test-with-coverage": "nyc --reporter=text mocha './app/**/__test__/*spec.ts' --require ts-node/register --timeout 300000 --exit",
+    "test-coverage": "nyc --reporter=html mocha './app/**/__test__/*spec.ts' --require ts-node/register --timeout 300000 --exit"
   },
   "keywords": [
     "chetos"
@@ -39,6 +42,7 @@
     "chai": "^4.3.7",
     "mocha": "^10.1.0",
     "nodemon": "^2.0.20",
+    "nyc": "^15.1.0",
     "supertest": "^6.3.2",
     "ts-node": "^10.9.1"
   },

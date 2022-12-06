@@ -1,3 +1,8 @@
+## Requirements
+
+1. Node.js `v14+`
+2. NPM `v7+`
+
 ## My approach
 
 To create a vending machine, I decided to break down the machine into two independent structures
@@ -41,6 +46,8 @@ There are admin and user endpoints. The admin endpoints are used to interact wit
 3. Run `npm test` to run the tests
 4. Run `npm run dev` to start the server
 5. Go to `http://localhost:9090/api-docs` to see the swagger docs
+6. You can run `npm run build` to build the project. The build files will be in the `dist` folder.
+7. You can run `npm run test:with-coverage` to run the tests with coverage. The coverage report will be in the `coverage` folder.
 
 ## A few things to note
 
@@ -59,4 +66,4 @@ There are admin and user endpoints. The admin endpoints are used to interact wit
    3. The items in the shelf
    4. The quantity of each item in the shelf
 
-### Shelves are harder to impliment without taking too much memeory and that would simulate a real vending machine.
+### Shelves are harder to impliment without taking too much memory and that would simulate a real vending machine which would be far cooler.
