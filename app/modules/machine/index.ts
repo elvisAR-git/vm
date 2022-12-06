@@ -5,6 +5,7 @@ import Money from "./register/models/money";
 import Product from "./inventory/models/product";
 import Change from "./register/models/change";
 
+
 export default class Machine {
     private register: Register;
     private inventory: Inventory;
@@ -74,30 +75,35 @@ export default class Machine {
         }
         this.register = new Register(this.mode);
         this.inventory = new Inventory();
-        this.inventory.addProduct({
-            name: 'Coke',
-            price: 1.25,
-            qty: 20,
-            type: 'drink',
-        })
-        this.inventory.addProduct({
-            name: 'Pepsi',
-            price: 3.99,
-            qty: 20,
-            type: 'drink',
-        });
-        this.inventory.addProduct({
-            name: 'Sprite',
-            price: 2.25,
-            qty: 20,
-            type: 'drink',
-        });
-        this.inventory.addProduct({
-            name: 'Cheetos',
-            price: 3.25,
-            qty: 20,
-            type: 'snack',
-        });
+
+        if (process.env.NODE_ENV != 'test') {
+
+            console.log(process.env.NODE_ENV);
+            this.inventory.addProduct({
+                name: 'Coke',
+                price: 1.25,
+                qty: 20,
+                type: 'drink',
+            })
+            this.inventory.addProduct({
+                name: 'Pepsi',
+                price: 3.99,
+                qty: 20,
+                type: 'drink',
+            });
+            this.inventory.addProduct({
+                name: 'Sprite',
+                price: 2.25,
+                qty: 20,
+                type: 'drink',
+            });
+            this.inventory.addProduct({
+                name: 'Cheetos',
+                price: 3.25,
+                qty: 20,
+                type: 'snack',
+            });
+        }
     }
 
 

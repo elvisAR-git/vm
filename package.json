@@ -4,7 +4,7 @@
   "description": "pariti vending machine",
   "main": "index.ts",
   "scripts": {
-    "test": "mocha './app/**/__test__/*spec.ts' --require ts-node/register --timeout 300000 --exit",
+    "test": "mocha './app/**/__test__/*spec.ts' --require ts-node/register --timeout 300000 --exit ",
     "dev": "nodemon index.ts",
     "build": "tsc -p .",
     "test-with-coverage": "nyc --reporter=text mocha './app/**/__test__/*spec.ts' --require ts-node/register --timeout 300000 --exit",

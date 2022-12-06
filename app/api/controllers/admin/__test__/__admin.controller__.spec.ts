@@ -2,11 +2,9 @@ import { expect } from 'chai';
 import request from 'supertest';
 import app from '../../../../..';
 import environment from '../../../../config/environment';
-process.env.NODE_ENV = 'test';
 
 // Main application Routes
 const PREFIX = `/api/${environment.apiVersion}`;
-
 
 
 // mock a few products
@@ -34,6 +32,7 @@ const products = [
 
 describe('[ TEST ] Admin routes', () => {
     before(`should add products to the inventory`, async () => {
+        await request(app).post(`${PREFIX}/admin/clearInventory`).send();
         const res = await request(app).post(`${PREFIX}/admin/products`).send(products);
         expect(res.status).to.equal(201);
         expect(res.body).to.be.an('object');
