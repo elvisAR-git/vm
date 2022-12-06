@@ -55,7 +55,7 @@ There are admin and user endpoints. The admin endpoints are used to interact wit
 
 2. The machine is not thread safe. If multiple users are interacting with the machine at the same time, there is a chance that the machine will be in an inconsistent state. In a real world scenario, the machine would be thread safe. I would use a database to persist the machine state and use transactions to ensure that the machine is in a consistent state.
 
-3. The machine is not secure. There is no authentication or authorization. In a real world scenario, the machine would be secured with authentication and authorization. The admin endpoints would be secured with authentication and authorization. The user endpoints would be secured with authentication and authorization. The user would be authenticated and authorized to use the machine. The user would be authenticated and authorized to buy items from the machine.
+3. The machine is not secure. There is no authentication or authorization. In a real world scenario, the machine would be secured with authentication and authorization.
 
 ## A few things I would do differently
 
