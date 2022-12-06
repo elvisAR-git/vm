@@ -23,11 +23,7 @@ export function expressAddon(app: express.Application) {
     app.use(bodyParser.json({ inflate: true, limit: "100mb" }));
     app.use(methodOverride());
 
-    if ("production" === env) {
-        app.use(morgan("dev"));
-    }
-
-    if ("development" === env || "test" === env) {
+    if ("development" === env) {
         app.use(morgan("dev"));
         app.use(errorHandler());
     }

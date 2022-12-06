@@ -9,7 +9,7 @@ export default function userRoutes(vm: Machine) {
 
     // catalog
     userRouter.get('/products', userController.getProducts.bind(userController));
-    userRouter.post('/buy', userController.buyProduct.bind(userController));
+    userRouter.post('/buy/:slot', userController.buyProduct.bind(userController));
 
     return userRouter;
 }

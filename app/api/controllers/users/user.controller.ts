@@ -19,12 +19,16 @@ export default class UserContoller {
 
     public async buyProduct(req: Request, res: Response) {
         try {
+            let slot: number = parseInt(req.params.slot)
             const product = req.body as {
                 qty: number,
                 bills: { value: number, count: number }[],
                 coins: { value: number, count: number }[],
                 slot: number
             };
+
+            product.slot = slot
+
             if (!product) throw new Error("Product is required");
 
             const result = this.vm.buyProduct(product.slot, product.qty, {

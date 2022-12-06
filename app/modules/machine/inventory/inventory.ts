@@ -31,8 +31,9 @@ export default class Inventory {
         this.products.splice(slot, 1);
     }
 
-    public updateProduct(slot: number, product: Product) {
+    public updateProduct(slot: number, product: Product): Product {
         this.products[slot] = product;
+        return product;
     }
 
     buyProduct(slot: number, qty: number): Product {

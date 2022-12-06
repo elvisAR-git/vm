@@ -29,7 +29,9 @@ export default class Register {
     }
 
     get total(): number {
-        return this.mode.bills.reduce((total, bill) => total + (bill.value * bill.count), 0) + this.mode.coins.reduce((total, coin) => total + (coin.value * coin.count), 0);
+        let t = this.mode.bills.reduce((total, bill) => total + (bill.value * bill.count), 0) + this.mode.coins.reduce((total, coin) => total + (coin.value * coin.count), 0);
+        // round to 2 decimal places
+        return Math.round(t * 100) / 100;
     }
 
 
@@ -94,7 +96,6 @@ export default class Register {
     }
 
     private convertToMoney(value: number) {
-        console.time('convertToMoney');
         const bills = this.mode.bills;
         const coins = this.mode.coins;
         const money: Money[] = [];
@@ -120,6 +121,8 @@ export default class Register {
 
             }
         });
+
+        value = Math.round(value * 100) / 100;
 
         coins.forEach((coin) => {
             while (value >= coin.value && coin.count > 0) {
@@ -148,13 +151,11 @@ export default class Register {
         });
 
         // round value to 2 decimal places
-
-
+        value = Math.round(value * 100) / 100;
 
         // if there is still money left, throw error
         if (value > 0) {
             // if money left is less than the smallest coin, throw error
-
             if (value < coins[coins.length - 1].value) {
                 throw new Error('Not enough change, too small of a coin');
             }
@@ -177,7 +178,6 @@ export default class Register {
 
         this.mode.bills = bills;
         this.mode.coins = coins;
-        console.timeEnd('convertToMoney');
         return money;
     }
 
@@ -192,7 +192,6 @@ export default class Register {
         }[],
         itemCost: number
     ): Change {
-        console.time('checkout');
         // make copy of bills and coins in register just in case we need to revert
         const billsCopy = this.mode.bills.map((bill) => ({ ...bill }));
         const coinsCopy = this.mode.coins.map((coin) => ({ ...coin }));
@@ -254,18 +253,17 @@ export default class Register {
             throw error;
         }
 
-        console.timeEnd('checkout');
 
         return {
             cash: money,
             itemCost,
             amountPaid: total,
-            changeDue: change
+            changeDue: Math.round((change) * 100) / 100
         }
     }
 
 
-    public widthdraw(amount: number, drain = false): void | Money[] {
+    public withdraw(amount: number, drain = false): void | Money[] {
 
         // get copy of bills and coins in register
         const billsCopy = this.mode.bills.map((bill) => ({ ...bill }));

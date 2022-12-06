@@ -61,7 +61,7 @@ export default class AdminController {
 
             if (!amount) throw new Error("Amount is required");
 
-            const cash = this.vm.getRegister().widthdraw(amount);
+            const cash = this.vm.getRegister().withdraw(amount);
 
             return sendResponse(res, cash, false, "Cash withdrawn successfully", 200);
         } catch (err) {
@@ -206,12 +206,12 @@ export default class AdminController {
 
     public async updateProduct(req: Request, res: Response) {
         try {
-            const product = req.body as Product
+            let product = req.body as Product
             const slot = req.params.slot as unknown as number;
 
             if (!slot || !product) throw new Error("Slot and product are required");
 
-            this.vm.getInventory().updateProduct(slot, product);
+            product = this.vm.getInventory().updateProduct(slot, product);
 
             return sendResponse(res, product, false, "Product updated successfully", 200);
         } catch (err) {

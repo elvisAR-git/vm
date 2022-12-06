@@ -12,7 +12,7 @@ export default function appRoutes(app: express.Application, vm: Machine) {
     app.use(`${PREFIX}/user`, appControllers(vm).user);
 
     // catch 404 and forward to error handler
-    app.use((req, res,) => {
+    app.use((req, res) => {
 
         // basic 404 error
         res.status(404).send(
@@ -30,5 +30,6 @@ export default function appRoutes(app: express.Application, vm: Machine) {
             </html>
             `
         )
+
     });
 }
